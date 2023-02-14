@@ -1,7 +1,10 @@
+using back_end.Controllers;
+using back_end.Filtros;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,8 +29,35 @@ namespace back_end
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            //Solo para navegadores web (no hace falta en android o iphone)
+            services.AddCors(options =>
+            {
+                var frontendURL = Configuration.GetValue<string>("front-end_url");
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader()
+                    .WithExposedHeaders(new string[] { "cantidadTotalRegistros" });
+                });
+            });
+
+            //No se puede instalar esta libreria pero dejo la linea de ejemplo.
+            //Faltaria poner una linea ene l configure y luego en cada acción del controlador que qqueramos
+            //que este autenticado.
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
+            //Para usar filtro personalizado global
+            services.AddTransient<MiFiltroDeAccion>();
+
+            //Caputar Exception personalizada global
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(FiltroDeExcepcion));
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "back_end", Version = "v1" });
@@ -47,6 +77,8 @@ namespace back_end
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
