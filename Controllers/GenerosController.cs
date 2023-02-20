@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using back_end.DTOs;
+using back_end.DTOs.Genero;
+using back_end.DTOs.Paginacion;
 using back_end.Entidades;
 using back_end.Filtros;
 using back_end.Utilidades;
@@ -19,8 +20,8 @@ namespace back_end.Controllers
     [ApiController]
     public class GenerosController : ControllerBase
     {
-        private readonly ILogger<GenerosController> logger;
         private readonly ApplicationDbContext context;
+        private readonly ILogger<GenerosController> logger;
         private readonly IMapper mapper;
 
         public GenerosController(ILogger<GenerosController> logger,
@@ -55,7 +56,7 @@ namespace back_end.Controllers
         //    return repositorio.ObtenerGuid();
         //}
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<GeneroDTO>> Get(int Id)
         {
             var genero = await context.Generos.FirstOrDefaultAsync(x => x.Id == Id);

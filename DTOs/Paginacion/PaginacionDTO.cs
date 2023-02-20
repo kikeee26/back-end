@@ -1,4 +1,4 @@
-﻿namespace back_end.DTOs
+﻿namespace back_end.DTOs.Paginacion
 {
     public class PaginacionDTO
     {
@@ -9,13 +9,13 @@
 
         public int RecordsPorPagina
         {
-            get 
-            { 
-                return recordsPorPagina; 
+            get
+            {
+                return recordsPorPagina;
             }
             set
             {
-                recordsPorPagina = (value > cantidadMaximaRecordsPorPagina) ? cantidadMaximaRecordsPorPagina : value;
+                recordsPorPagina = value > cantidadMaximaRecordsPorPagina ? cantidadMaximaRecordsPorPagina : value;
             }
         }
     }

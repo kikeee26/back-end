@@ -1,5 +1,7 @@
+using AutoMapper;
 using back_end.Controllers;
 using back_end.Filtros;
+using back_end.Utilidades;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +35,20 @@ namespace back_end
         {
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddSingleton(provider =>            
+                new MapperConfiguration(config =>
+                {
+                    var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+                    config.AddProfile(new AutoMapperProfiles(geometryFactory));
+                }).CreateMapper());
+
+            services.AddTransient<IAlmacenadorArchivos, AlmacenadorAzureStorage>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection"),
+                sqlServer => sqlServer.UseNetTopologySuite()));
+
+            services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
 
             //Solo para navegadores web (no hace falta en android o iphone)
             services.AddCors(options =>
@@ -46,7 +62,7 @@ namespace back_end
             });
 
             //No se puede instalar esta libreria pero dejo la linea de ejemplo.
-            //Faltaria poner una linea ene l configure y luego en cada acción del controlador que qqueramos
+            //Faltaria poner una linea en el configure y luego en cada acción del controlador que qqueramos
             //que este autenticado.
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 

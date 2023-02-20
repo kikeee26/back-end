@@ -1,4 +1,4 @@
-﻿using back_end.DTOs;
+﻿using back_end.DTOs.Paginacion;
 using System.Linq;
 
 namespace back_end.Utilidades

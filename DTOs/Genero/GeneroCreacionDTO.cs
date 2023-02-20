@@ -1,7 +1,7 @@
 ﻿using back_end.Validaciones;
 using System.ComponentModel.DataAnnotations;
 
-namespace back_end.DTOs
+namespace back_end.DTOs.Genero
 {
     public class GeneroCreacionDTO
     {
