@@ -34,7 +34,7 @@ namespace back_end.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
         {
-            var pelicula = mapper.Map<Pelicula>(peliculaCreacionDTO);
+            var pelicula = mapper.Map<Peliculas>(peliculaCreacionDTO);
 
             if (peliculaCreacionDTO.Poster != null)
             {
@@ -60,7 +60,7 @@ namespace back_end.Controllers
             return new PeliculasPostGetDTO() { Cines = cinesDTO, Generos = generosDTO };
         }
 
-        private void EscribirOrdenActores (Pelicula pelicula)
+        private void EscribirOrdenActores (Peliculas pelicula)
         {
             if(pelicula.PeliculasActores != null)
             {

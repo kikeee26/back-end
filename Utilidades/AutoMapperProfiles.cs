@@ -31,7 +31,7 @@ namespace back_end.Utilidades
                 .ForMember(x => x.Latitud, dto => dto.MapFrom(campo => campo.Ubicacion.Y))
                 .ForMember(x => x.Longitud, dto => dto.MapFrom(campo => campo.Ubicacion.X));
 
-            CreateMap<PeliculaCreacionDTO, Pelicula>()
+            CreateMap<PeliculaCreacionDTO, Peliculas>()
                 .ForMember(x => x.Poster, opciones => opciones.Ignore())
                 .ForMember(x => x.PeliculasGeneros, opciones => opciones.MapFrom(MapearPeliculasGeneros))
                 .ForMember(x => x.PeliculasCines, opciones => opciones.MapFrom(MapearPeliculasCines))
@@ -39,7 +39,7 @@ namespace back_end.Utilidades
         }
 
         private List<PeliculasActores> MapearPeliculasActores(PeliculaCreacionDTO peliculaCreacionDTO,
-            Pelicula pelicula)
+            Peliculas pelicula)
         {
             var resultado = new List<PeliculasActores>();
 
@@ -53,7 +53,7 @@ namespace back_end.Utilidades
         }
 
         private List<PeliculasGeneros> MapearPeliculasGeneros (PeliculaCreacionDTO peliculaCreacionDTO, 
-            Pelicula pelicula)
+            Peliculas pelicula)
         {
             var resultado = new List<PeliculasGeneros>();
 
@@ -67,7 +67,7 @@ namespace back_end.Utilidades
         }
 
         private List<PeliculasCines> MapearPeliculasCines(PeliculaCreacionDTO peliculaCreacionDTO,
-            Pelicula pelicula)
+            Peliculas pelicula)
         {
             var resultado = new List<PeliculasCines>();
 

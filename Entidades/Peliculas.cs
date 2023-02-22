@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace back_end.Entidades
 {
-    public class Pelicula
+    public class Peliculas
     {
         public int Id { get; set; }
         [Required]
