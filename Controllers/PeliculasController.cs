@@ -77,7 +77,7 @@ namespace back_end.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
+        public async Task<ActionResult<int>> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
         {
             var pelicula = mapper.Map<Peliculas>(peliculaCreacionDTO);
 
@@ -90,7 +90,7 @@ namespace back_end.Controllers
             context.Add(pelicula);
             await context.SaveChangesAsync();
 
-            return NoContent();
+            return pelicula.Id;
         }
 
         [HttpGet("PostGet")]
