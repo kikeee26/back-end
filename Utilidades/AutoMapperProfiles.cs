@@ -76,8 +76,8 @@ namespace back_end.Utilidades
                         Id = actorPeliculas.ActorId, 
                         Nombre = actorPeliculas.Actor.Nombre,
                         Foto = actorPeliculas.Actor.Foto,
-                        Orden = actorPeliculas.Actor.Orden,
-                        Personaje = actorPeliculas.Actor.Personaje
+                        Orden = Convert.ToString(actorPeliculas.Orden),
+                        Personaje = actorPeliculas.Personaje
                     });
                 }
             }
