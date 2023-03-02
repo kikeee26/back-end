@@ -211,5 +211,23 @@ namespace back_end.Controllers
                 }
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var peliculas = await context.Peliculas.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (peliculas == null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(peliculas);
+            await context.SaveChangesAsync();
+
+            await almacenadorArchivos.BorrarArchivo(peliculas.Poster, contenedor);
+
+            return NoContent();
+        }
     }
 }
