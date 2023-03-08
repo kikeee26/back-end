@@ -4,6 +4,8 @@ using back_end.DTOs.Paginacion;
 using back_end.Entidades;
 using back_end.Filtros;
 using back_end.Utilidades;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,7 @@ namespace back_end.Controllers
 {
     [Route("api/generos")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class GenerosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -57,6 +60,7 @@ namespace back_end.Controllers
         //}
 
         [HttpGet("todos")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<GeneroDTO>>> Todos()
         { 
             var generos = await context.Generos.ToListAsync();

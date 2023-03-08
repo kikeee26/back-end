@@ -4,6 +4,8 @@ using back_end.DTOs.Genero;
 using back_end.DTOs.Paginacion;
 using back_end.Entidades;
 using back_end.Utilidades;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nest;
@@ -15,6 +17,7 @@ namespace back_end.Controllers
 {
     [ApiController]
     [Route("api/cines")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class CinesController: ControllerBase
     {
         private readonly ApplicationDbContext context;
